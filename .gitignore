@@ -1,0 +1,51 @@
+# Ambiente virtual
+venvTM/
+.env/
+*.env
+
+# Arquivos Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos do SQLite (banco local)
+*.sqlite3
+
+# Arquivos temporários
+*.log
+*.pot
+*.pyc
+*.pyo
+
+# Configurações do sistema
+.DS_Store
+Thumbs.db
+
+# Diretórios de cache do Django
+staticfiles/
+media/
+
+# Arquivos de migração órfãos (opcional)
+*/migrations/*.pyc
+*/migrations/__pycache__/
+# (Você pode excluir também os arquivos de migração *.py se quiser recriá-los do zero)
+
+# VS Code e outras IDEs
+.vscode/
+.idea/
+
+# Arquivos do sistema operacional
+*.swp
+*.swo
+
+# Cobertura de testes
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# node_modules (caso use JS no projeto)
+node_modules/
