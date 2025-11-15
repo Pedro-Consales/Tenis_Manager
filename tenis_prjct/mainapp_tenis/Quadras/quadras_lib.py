@@ -1,58 +1,43 @@
-def all_quadras():
+import json
+from pathlib import Path
 
-    quadra1 = {
-    'Nome': 'Quadra 1',
-    'Id': 10, 
-    'Tipo': 'Saibro',
-    'Capacidade': 4, 
-    'Disponivel': True,
-    'Interditado': False,
-    }
+# mainapp_tenis/quadras_data.json
+DATA_PATH = Path(__file__).resolve().parent.parent / "quadras_data.json"  # ou "quadras.json" se for esse o nome
 
-    quadra2 = {
-        'Nome': 'Quadra 2',
-        'Id': 11, 
-        'Tipo': 'Grama',
-        'Capacidade': 2, 
-        'Disponivel': True,
-        'Interditado': False,
-    }
+def load_quadras():
+    try:
+        with open(DATA_PATH, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return -1001  # arquivo não encontrado
+    
+def salvar_quadras(quadras_list):
+    try:
+        with open(DATA_PATH, "w", encoding="utf-8") as file:
+            json.dump(quadras_list, file, indent=4, ensure_ascii=False)
+            return 0  # sucesso
+    except Exception as e:
+        print(f"Erro ao salvar o arquivo: {e}")
+        return -1002  # erro ao salvar o arquivo
 
-    quadra3 = {
-        'Nome': 'Quadra 3',
-        'Id': 12, 
-        'Tipo': 'Dura',
-        'Capacidade': 4, 
-        'Disponivel': True,
-        'Interditado': False,
-    }
+def get_quadra_by_id(quadra_id, todas_quadras):
 
-    quadra4 = {
-        'Nome': 'Quadra 4',
-        'Id': 13, 
-        'Tipo': 'Carpet',
-        'Capacidade': 2, 
-        'Disponivel': True,
-        'Interditado': True,
-    }
+    print("\nTodas as quadras que estou consultando:\n\n")
+    print(todas_quadras)
 
-    quadra5 = {
-        'Nome': 'Quadra 5',
-        'Id': 14, 
-        'Tipo': 'Saibro',
-        'Capacidade': 4, 
-        'Disponivel': True,
-        'Interditado': False,
-    }
+    # Garantir que o JSON foi carregado corretamente
+    if isinstance(todas_quadras, int):
+        print("Erro ao carregar quadras (retornou código de erro).")
+        return None
 
-    lista_quadras = [quadra1, quadra2, quadra3, quadra4, quadra5]
-    return lista_quadras
-
-
-
-def get_quadra_by_id(quadra_id):
-    todas_quadras = all_quadras()
+    # Percorre cada quadra do JSON
     for quadra in todas_quadras:
-        if quadra['Id'] == quadra_id:
-            return quadra
-    return -1  # Retorna -1 se a quadra não for encontrada
+        # Se o campo "Id" bater com o ID procurado
+        print(f"\nNome Quadra: {quadra["Nome"]}\n")
+
+        print(f"\n quadra.ger('ID'): {quadra.get("Id")} == quadra_id: {quadra_id}\n")
+
+        if quadra.get("Id") == quadra_id:
+            return quadra  # Retorna
+        
+    return -1 #quadra não encontrada
