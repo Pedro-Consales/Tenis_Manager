@@ -59,7 +59,7 @@
                                         <p>Sem horários</p>
                                       {% endfor %}
                                     </select>
-                                  </div>
+                                </div>
 
                                 <div>
                                     <label for="quadra_id" class="text-sm text-gray-600">Quadra</label>
@@ -69,7 +69,7 @@
                                         <option value="{{ q.Id }}">{{ q.Nome }} (ID {{ q.Id }})</option>
                                       {% endfor %}
                                     </select>
-                                  </div>
+                                </div>
 
                                 <div>
                                   <label for="matricula" class="text-sm text-gray-600">Matrícula do associado</label>
@@ -92,7 +92,7 @@
                 <div class="w-80 bg-white rounded-lg shadow-md flex flex-col justify-start items-center p-4">
 
                     <span class="text-2xl font-semibold">{{ quadra.Nome }}</span>
-                    <span class="text-sm text-gray-400"> Tipo: {{ quadra.Tipo }} </span>
+                    <span class="text-sm text-gray-500"> Tipo: {{ quadra.Tipo }} </span>
 
                     <!-- BOTÃO RESERVAR QUE ABRE O MODAL -->
                     <label for="modal-{{ quadra.Id }}" class="cursor-pointer mt-4">
@@ -104,11 +104,22 @@
                     <span class="text-sm text-gray-600 mt-2">Reservas: {{ quadra.Count_reservas }}</span>
 
                     {% if quadra.Horarios %}
-                    <ul class="w-full text-xs text-gray-600 mt-3 space-y-2 max-h-40 overflow-y-auto">
+                        
+                
+                    <ul class="relative w-full text-xs text-gray-600 mt-3 space-y-2 max-h-40 overflow-y-auto">
                     {% for slot in quadra.Horarios %}
-                        <li class="border border-gray-300 rounded p-2">
-                            <div class="font-medium">{{ slot.Inicio }} — {{ slot.Fim }}</div>
+                        <li class="relative border border-gray-300 rounded p-2">
+                            <!-- Botão X do slot (sempre visível) -->
+                            <form method="POST" action="{% url 'remove-reserva' quadra.Id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="horario_inicio" value="{{ slot.Inicio }}">
+                                <button type="submit"
+                                        class="absolute top-2 right-2 text-gray-500 hover:text-red-600"
+                                        title="Remover reservas deste horário">✕</button>
+                            </form>
+                           
 
+                            <div class="font-medium">{{ slot.Inicio }} — {{ slot.Fim }}</div>
                             {% if slot.Reservas.lista_socio_ids %}
                                 <div>Participantes ({{ slot.Reservas.lista_socio_ids|length }}):</div>
                                 <ul class="list-disc list-inside">
@@ -124,7 +135,7 @@
                     {% endfor %}
                     </ul>
                     {% else %}
-                    <span class="text-sm text-gray-400 mt-2">Sem horários</span>
+                        <span class="text-sm text-gray-400 mt-2">Sem horários</span>
                     {% endif %}
 
                 </div>
@@ -138,12 +149,12 @@
 
                     <!-- BOTÃO PARA ATIVAR -->
                     <div class="absolute top-2 right-7">
-                    <form method="POST" action="{% url 'set-disp-true' quadra.Id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="text-green-500 px-4 py-2 rounded">
-                            <i class="bi bi-toggle-on"></i>
-                        </button>
-                    </form>
+                        <form method="POST" action="{% url 'set-disp-true' quadra.Id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="text-green-500 px-4 py-2 rounded">
+                                <i class="bi bi-toggle-on"></i>
+                            </button>
+                        </form>
                     </div>
 
                 </div>
