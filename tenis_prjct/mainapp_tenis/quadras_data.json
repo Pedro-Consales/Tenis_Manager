@@ -6,35 +6,27 @@
         "Capacidade": 4,
         "Disponivel": true,
         "Interditado": false,
-        "Count_reservas": 3,
+        "Count_reservas": 0,
         "Horarios": [
             {
                 "Inicio": "09:00",
                 "Fim": "10:00",
                 "Reservas": {
-                    "lista_socio_ids": [
-                        10,
-                        11
-                    ]
+                    "lista_socio_ids": []
                 }
             },
             {
                 "Inicio": "10:00",
                 "Fim": "11:00",
                 "Reservas": {
-                    "lista_socio_ids": [
-                        12345,
-                        2245
-                    ]
+                    "lista_socio_ids": []
                 }
             },
             {
                 "Inicio": "11:00",
                 "Fim": "12:00",
                 "Reservas": {
-                    "lista_socio_ids": [
-                        34445
-                    ]
+                    "lista_socio_ids": []
                 }
             },
             {
@@ -116,25 +108,20 @@
         "Capacidade": 2,
         "Disponivel": true,
         "Interditado": false,
-        "Count_reservas": 2,
+        "Count_reservas": 0,
         "Horarios": [
             {
                 "Inicio": "09:00",
                 "Fim": "10:00",
                 "Reservas": {
-                    "lista_socio_ids": [
-                        15,
-                        16
-                    ]
+                    "lista_socio_ids": []
                 }
             },
             {
                 "Inicio": "10:00",
                 "Fim": "11:00",
                 "Reservas": {
-                    "lista_socio_ids": [
-                        4455
-                    ]
+                    "lista_socio_ids": []
                 }
             },
             {

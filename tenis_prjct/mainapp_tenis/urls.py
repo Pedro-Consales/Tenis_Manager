@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .Quadras.views_quadras import show_quadras, set_disponibilidade_false, set_disponibilidade_true, make_reserva
+from .Quadras.views_quadras import show_quadras, set_disponibilidade_false, set_disponibilidade_true, make_reserva, remove_reserva
 from .views import show_menubase
 
 urlpatterns = [
@@ -12,4 +12,6 @@ urlpatterns = [
 
     # múltiplos parâmetros no path
     path("make_reserva/<int:quadra_id>/", make_reserva, name="make-reserva"),
+    path("remove_reserva/<int:quadra_id>/", remove_reserva, name="remove-reserva"),
+
 ]
