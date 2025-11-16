@@ -35,7 +35,7 @@ def get_quadra_by_id(quadra_id, todas_quadras):
         # Se o campo "Id" bater com o ID procurado
         print(f"\nNome Quadra: {quadra["Nome"]}\n")
 
-        print(f"\n quadra.ger('ID'): {quadra.get("Id")} == quadra_id: {quadra_id}\n")
+        print(f"\n quadra.get('ID'): {quadra.get("Id")} == quadra_id: {quadra_id}\n")
 
         if quadra.get("Id") == quadra_id:
             return quadra  # Retorna

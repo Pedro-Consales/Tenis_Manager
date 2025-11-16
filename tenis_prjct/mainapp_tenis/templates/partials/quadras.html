@@ -35,18 +35,52 @@
                             <p class="text-sm text-gray-600">Id: {{ quadra.Id }}</p>
                         </div>
 
-                        <div>
-                            <label for="modal-{{ quadra.Id }}" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer">✕</label>
-                        </div>
+                        <label for="modal-{{ quadra.Id }}" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer">✕</label>
                     
 
-                        <div class="p-4">
+                        <div class="p-8">
 
-                            <form method="POST" action="{% url 'set-disp-false' quadra.Id %}" class="mt-6">
+                            <form method="POST" action = "{% url 'make-reserva' quadra.Id %}"  class="flex flex-col w-full gap-4">
                                 {% csrf_token %}
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">
-                                    Indisponível
-                                </button>
+
+                                <div>
+                                    <label for="horario-{{ quadra.Id }}" class="text-sm text-gray-600">Horário</label>
+                                    <select id="horario-{{ quadra.Id }}" name="horario_inicio" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                                      <option value="" selected disabled>Selecione o horário...</option>
+                                      {% for slot in quadra.Horarios %}
+                                        <option value="{{ slot.Inicio }}">
+                                          {{ slot.Inicio }} — {{ slot.Fim }}
+
+                                            {% if slot.Reservas.lista_socio_ids %}
+                                                ({{ slot.Reservas.lista_socio_ids|length }} reservas)
+                                            {% endif %}
+                                        </option>
+                                      {% empty %}
+                                        <p>Sem horários</p>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+
+                                <div>
+                                    <label for="quadra_id" class="text-sm text-gray-600">Quadra</label>
+                                    <select id="quadra_id" name="quadra_id" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                                      <option value="" selected disabled>Selecione a quadra...</option>
+                                      {% for q in lista_quadras %}
+                                        <option value="{{ q.Id }}">{{ q.Nome }} (ID {{ q.Id }})</option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+
+                                <div>
+                                  <label for="matricula" class="text-sm text-gray-600">Matrícula do associado</label>
+                                  <input id="matricula" name="matricula" type="number" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="ex: 12345" required>
+                                </div>
+
+                                <div class="flex items-end">
+                                  <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                    Continuar
+                                  </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -58,6 +92,7 @@
                 <div class="w-80 bg-white rounded-lg shadow-md flex flex-col justify-start items-center p-4">
 
                     <span class="text-2xl font-semibold">{{ quadra.Nome }}</span>
+                    <span class="text-sm text-gray-400"> Tipo: {{ quadra.Tipo }} </span>
 
                     <!-- BOTÃO RESERVAR QUE ABRE O MODAL -->
                     <label for="modal-{{ quadra.Id }}" class="cursor-pointer mt-4">

@@ -6,7 +6,7 @@
         "Capacidade": 4,
         "Disponivel": true,
         "Interditado": false,
-        "Count_reservas": 0,
+        "Count_reservas": 3,
         "Horarios": [
             {
                 "Inicio": "09:00",
@@ -22,14 +22,19 @@
                 "Inicio": "10:00",
                 "Fim": "11:00",
                 "Reservas": {
-                    "lista_socio_ids": []
+                    "lista_socio_ids": [
+                        12345,
+                        2245
+                    ]
                 }
             },
             {
                 "Inicio": "11:00",
                 "Fim": "12:00",
                 "Reservas": {
-                    "lista_socio_ids": []
+                    "lista_socio_ids": [
+                        34445
+                    ]
                 }
             },
             {
@@ -111,7 +116,7 @@
         "Capacidade": 2,
         "Disponivel": true,
         "Interditado": false,
-        "Count_reservas": 0,
+        "Count_reservas": 2,
         "Horarios": [
             {
                 "Inicio": "09:00",
@@ -127,7 +132,9 @@
                 "Inicio": "10:00",
                 "Fim": "11:00",
                 "Reservas": {
-                    "lista_socio_ids": []
+                    "lista_socio_ids": [
+                        4455
+                    ]
                 }
             },
             {
