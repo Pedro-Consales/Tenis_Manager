@@ -18,11 +18,10 @@
         />
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
-    <body class="h-screen">
+    <body class="h-screen relative">
         <!-- SIDEBAR -->
         <nav
-            class="fixed top-0 left-0 bottom-0 bg-white w-[18rem] z-[200] pt-[5px] border-r border-gray-200"
-        >
+            class="fixed top-0 left-0 bottom-0 bg-white w-[18rem] z-[200] pt-[5px] border-r border-gray-200">
             <div class="flex flex-col items-center justify-start h-full">
                 <div class="h-24 border-none w-full flex justify-center items-center px-8 mb-4">
                     <img
@@ -60,7 +59,7 @@
             <div class="mb-6">
                 {% for message in messages %}
                 <div
-                    class="px-4 py-2 rounded shadow text-white text-sm {% if message.tags == 'success' %} bg-green-600 {% elif message.tags == 'warning' %} bg-yellow-600 {% elif message.tags == 'info' %} bg-blue-600 {% else %} bg-red-600 {% endif %}"
+                    class="absolute top-3 right-2 px-4 py-2 rounded shadow text-white text-sm {% if message.tags == 'success' %} bg-green-600 {% elif message.tags == 'warning' %} bg-yellow-600 {% elif message.tags == 'info' %} bg-blue-600 {% else %} bg-red-600 {% endif %}"
                 >
                     {{ message }}
                 </div>

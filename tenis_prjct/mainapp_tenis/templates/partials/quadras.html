@@ -1,17 +1,159 @@
 {% extends "menu_base.html" %} 
 {% block content %}
-    <div class="w-full">
+<div class="w-full">
+    <div class="bg-gray-200">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-16">
+            {% for quadra in lista_quadras %}
 
-        <div class="bg-gray-200">
-           
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-16">
-                {% for quadra in lista_quadras %}
-                <div class = "w-80 h-60 bg-white rounded-lg shadow-md flex justify-center items-center">
-                    <span class = "text-2xl font-semibold">{{ quadra.Nome }}</span>
+            <div class="relative">
+
+                <!-- BOTÃO DE DESATIVAR (NÃO USAR LABEL AQUI) -->
+                <div class="absolute top-4 right-6 cursor-pointer text-red-500">
+                    <form method="POST" action="{% url 'set-disp-false' quadra.Id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500 px-4 py-2 rounded">
+                            <i class="bi bi-toggle-off"></i>
+                        </button>
+                    </form>
+                </div> 
+
+                {% if quadra.Disponivel == True %}
+                <!-- INPUT QUE CONTROLA O MODAL -->
+                <input id="modal-{{ quadra.Id }}" type="checkbox" class="peer sr-only">
+
+                <!-- MODAL -->
+                <div class="fixed inset-0 hidden peer-checked:flex z-[300] items-center justify-center">
+
+                    <!-- FUNDO ESCURO -->
+                    <label for="modal-{{ quadra.Id }}" class="fixed inset-0 bg-black/10 cursor-pointer"></label>
+
+                    <!-- CAIXA DO MODAL -->
+                    <div class="relative bg-white w-full max-w-lg mx-4 rounded-2xl shadow-xl border border-gray-200">
+                        <div class="flex flex-col items-center justify-center p-4 border-b">
+                            <h3 class="text-lg font-semibold">Gerenciar {{ quadra.Nome }}</h3><br>
+                            <p>Tipo: {{ quadra.Tipo }}</p>
+                            <p class="text-sm text-gray-600">Id: {{ quadra.Id }}</p>
+                        </div>
+
+                        <label for="modal-{{ quadra.Id }}" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer">✕</label>
+                    
+
+                        <div class="p-8">
+
+                            <form method="POST" action = "{% url 'make-reserva' quadra.Id %}"  class="flex flex-col w-full gap-4">
+                                {% csrf_token %}
+
+                                <div>
+                                    <label for="horario-{{ quadra.Id }}" class="text-sm text-gray-600">Horário</label>
+                                    <select id="horario-{{ quadra.Id }}" name="horario_inicio" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                                      <option value="" selected disabled>Selecione o horário...</option>
+                                      {% for slot in quadra.Horarios %}
+                                        <option value="{{ slot.Inicio }}">
+                                          {{ slot.Inicio }} — {{ slot.Fim }}
+
+                                            {% if slot.Reservas.lista_socio_ids %}
+                                                ({{ slot.Reservas.lista_socio_ids|length }} reservas)
+                                            {% endif %}
+                                        </option>
+                                      {% empty %}
+                                        <p>Sem horários</p>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+
+                                <div>
+                                    <label for="quadra_id" class="text-sm text-gray-600">Quadra</label>
+                                    <select id="quadra_id" name="quadra_id" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                                      <option value="" selected disabled>Selecione a quadra...</option>
+                                      {% for q in lista_quadras %}
+                                        <option value="{{ q.Id }}">{{ q.Nome }} (ID {{ q.Id }})</option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+
+                                <div>
+                                  <label for="matricula" class="text-sm text-gray-600">Matrícula do associado</label>
+                                  <input id="matricula" name="matricula" type="number" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="ex: 12345" required>
+                                </div>
+
+                                <div class="flex items-end">
+                                  <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                    Continuar
+                                  </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
-                {% endfor %}
+                <!-- FIM MODAL -->
+
+                <!-- CARD DA QUADRA -->
+                <div class="w-80 bg-white rounded-lg shadow-md flex flex-col justify-start items-center p-4">
+
+                    <span class="text-2xl font-semibold">{{ quadra.Nome }}</span>
+                    <span class="text-sm text-gray-400"> Tipo: {{ quadra.Tipo }} </span>
+
+                    <!-- BOTÃO RESERVAR QUE ABRE O MODAL -->
+                    <label for="modal-{{ quadra.Id }}" class="cursor-pointer mt-4">
+                        <div class="w-24 h-8 bg-blue-500 text-white rounded flex items-center justify-center hover:bg-blue-600 transition">
+                            Reservar
+                        </div>
+                    </label>
+
+                    <span class="text-sm text-gray-600 mt-2">Reservas: {{ quadra.Count_reservas }}</span>
+
+                    {% if quadra.Horarios %}
+                    <ul class="w-full text-xs text-gray-600 mt-3 space-y-2 max-h-40 overflow-y-auto">
+                    {% for slot in quadra.Horarios %}
+                        <li class="border border-gray-300 rounded p-2">
+                            <div class="font-medium">{{ slot.Inicio }} — {{ slot.Fim }}</div>
+
+                            {% if slot.Reservas.lista_socio_ids %}
+                                <div>Participantes ({{ slot.Reservas.lista_socio_ids|length }}):</div>
+                                <ul class="list-disc list-inside">
+                                {% for socio_id in slot.Reservas.lista_socio_ids %}
+                                    <li>ID {{ socio_id }}</li>
+                                {% endfor %}
+                                </ul>
+
+                            {% else %}
+                                <div class="text-gray-400">Sem reservas</div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <span class="text-sm text-gray-400 mt-2">Sem horários</span>
+                    {% endif %}
+
+                </div>
+
+                {% else %}
+
+                <!-- QUADRA INDISPONÍVEL -->
+                <div class="w-80 bg-red-500 rounded-lg shadow-md flex flex-col justify-start items-center p-4 text-white">
+
+                    {{ quadra.Nome }} indisponível
+
+                    <!-- BOTÃO PARA ATIVAR -->
+                    <div class="absolute top-2 right-7">
+                    <form method="POST" action="{% url 'set-disp-true' quadra.Id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-green-500 px-4 py-2 rounded">
+                            <i class="bi bi-toggle-on"></i>
+                        </button>
+                    </form>
+                    </div>
+
+                </div>
+
+                {% endif %}
+
             </div>
+
+            {% endfor %}
         </div>
     </div>
-
+</div>
 {% endblock %}
