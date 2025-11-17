@@ -1,0 +1,23 @@
+[
+    {
+        "matricula": 1001,
+        "nome": "Sócio Ativo",
+        "status": "ativo",
+        "convidados": [
+            2001,
+            9999
+        ]
+    },
+    {
+        "matricula": 1003,
+        "nome": "Sócio Inativo",
+        "status": "inativo",
+        "convidados": []
+    },
+    {
+        "matricula": 2001,
+        "nome": "Convidado Teste",
+        "status": "inativo",
+        "convidados": []
+    }
+]
