@@ -153,7 +153,6 @@ def make_reserva(request, quadra_id): #Pode ser que não dê para buscar daqui. 
     return redirect("quadras")
     
 
-
 def remove_reserva(request, quadra_id):
 
     todas_quadras = load_quadras()
@@ -204,6 +203,10 @@ def remove_reserva(request, quadra_id):
 
     lista_socios_ids = reservas["lista_socio_ids"]
     print(f"\nLista de sócios antes de adicionar: {lista_socios_ids}\n")
+
+    if not lista_socios_ids:
+        messages.error(request, "Nenhuma reserva para remover nesse horário.")
+        return redirect("quadras")
 
     lista_socios_ids.clear()
     print(f"Lista após remoção: {lista_socios_ids}\n")
